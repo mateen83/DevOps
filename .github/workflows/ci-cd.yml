@@ -33,7 +33,7 @@ jobs:
       run: echo "No build step yet"
 
     - name: Deploy public folder
-      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stage'
+      if: github.event_name == 'push'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
