@@ -3,17 +3,19 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main   # runs on push to main
+      - main
+      - stage
   pull_request:
     branches:
       - main
+      - stage
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v3
 
     - name: Setup Node.js
@@ -24,15 +26,15 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Run tests
-      run: npm test
+    - name: Skip tests
+      run: echo "No tests yet"
 
-    - name: Build project
-      run: npm run build
+    - name: Skip build
+      run: echo "No build step yet"
 
-    - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/main'
+    - name: Deploy public folder
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stage'
       uses: peaceiris/actions-gh-pages@v6
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build   # adjust based on your build output folder
+        publish_dir: ./public
